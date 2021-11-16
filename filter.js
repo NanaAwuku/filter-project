@@ -65,6 +65,7 @@ const menu = [
         adipisicing elit. Explicabo iusto laboriosam odit eveniet labore 
         corrupti neque esse dolorum et hic!`,
     },
+    
     {
         id : 7,
         title: 'sweet pancakes',
@@ -76,39 +77,29 @@ const menu = [
         adipisicing elit. Explicabo iusto laboriosam odit eveniet labore 
         corrupti neque esse dolorum et hic!`,
     },
+    {
+        id : 8,
+        title : 'steak',
+        category: 'dinner',
+        price: '55.55',
+        img: './img/hero1.png',
+        desc : ` This is a special delicacy prepared with special face of honour
+        Lorem ipsum dolor sit amet consectetur,
+        adipisicing elit. Explicabo iusto laboriosam odit eveniet labore 
+        corrupti neque esse dolorum et hic!`,
+    },
 ];
 const sectionCenter = document.querySelector('.section-center');
-const filterBtns = document.querySelectorAll('.filter-btn')
+const container = document.querySelector('.btn-container');
+
+
 
 window.addEventListener('DOMContentLoaded', function(){
     // console.log('shake and bake');
     displayMenuItem(menu);
+    manipulatedBtns ();
    
 });
-
-
-filterBtns.forEach(function(btn){
-    btn.addEventListener('click', function(e){
-        const category = e.currentTarget.dataset.id; 
-        const menuCategory = menu.filter( function(menuItem){
-        if(menuItem.category===category){
-         return menuItem;
-        };
-        });
-        // console.log(menuCategory)
-        if(category === 'all'){
-        displayMenuItem(menu);
-        }
-        else{
-            displayMenuItem(menuCategory);
-        };
-
-    });
-    // console.log(menuItem)
-    
-});
-
-
 function displayMenuItem(menuItem){
     let displayMenu = menu.map( function (item){
         
@@ -127,3 +118,42 @@ function displayMenuItem(menuItem){
     displayMenu = displayMenu.join('');
     sectionCenter.innerHTML= displayMenu;
 }
+function manipulatedBtns (){
+    const categories = menu.reduce(function(values, item){
+        if(!values.includes(item.category)){
+            values.push(item.category)
+        }
+        return values;
+    },['all']);
+    // console.log(categories);
+    const categoryBtn= categories.map(function (category){
+        return `<button class="filter-btn"  type="button" data-id="${category}"> 
+        ${category}</button>`
+    }).join('');
+    container.innerHTML=categoryBtn;
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+
+
+
+    filterBtns.forEach(function(btn){
+        btn.addEventListener('click', function(e){
+            const category = e.currentTarget.dataset.id; 
+            const menuCategory = menu.filter( function(menuItem){
+            if(menuItem.category == category ){
+             return menuItem;
+            };
+            });
+            
+            if(category === "all"){
+            displayMenuItem(menu)
+            }
+            else{
+                displayMenuItem(category)
+            };
+            console.log(menuCategory)
+        });
+        
+        
+    });
+};
